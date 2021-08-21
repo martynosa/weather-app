@@ -44,7 +44,7 @@ async function getWeather() {
 }
 
 async function request(locationName) {
-    const api = `http://wttr.in/${locationName}?format=j1`;
+    const api = `https://wttr.in/${locationName}?format=j1`;
     let weatherRequest = await fetch(api, {
         method: 'GET'
     });
