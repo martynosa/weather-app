@@ -16,10 +16,12 @@ async function getWeather() {
     inputEl.value = '';
 
     const result = await request(locationName);
+    console.log(result);
 
     //location
     const nearestLocation = result.nearest_area[0];
-    const city = nearestLocation.region[0].value;
+    const area = nearestLocation.areaName[0].value;
+    const region = nearestLocation.region[0].value;
     const country = nearestLocation.country[0].value;
     //data
     const currCondition = result.current_condition[0];
@@ -33,7 +35,7 @@ async function getWeather() {
 
     //filling in the data
     imgEl.src = img;
-    locationEl.textContent = city + ', ' + country;
+    locationEl.textContent = area + ' ' + region + ' ' + country;
     descriptionEl.textContent = icon.join(', ');
     tempEl.textContent = 'Temperature: ' + temp + ' °C';
     feelsLikeEl.textContent = 'Feels like: ' + feelsLike + ' °C';
@@ -141,7 +143,7 @@ function findImg(code) {
 
     const weatherDescription = findWeatherDescriptionByCode(code);
 
-    const imgs = {
+    const IMGS = {
         "Unknown": "./img/Default.jpg",
         "Cloudy": "./img/Cloudy.jpg",
         "Fog": "./img/Fog.jpg",
@@ -163,6 +165,6 @@ function findImg(code) {
         "VeryCloudy": "./img/VeryCloudy.jpg",
     };
 
-    const img = Object.entries(imgs).find(el => el[0] == weatherDescription[1]);
+    const img = Object.entries(IMGS).find(el => el[0] == weatherDescription[1]);
     return img[1];
 }
