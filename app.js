@@ -1,23 +1,22 @@
 //input and button
 let inputEl = document.getElementById('locationInput');
 document.getElementById('button-addon2').addEventListener('click', getWeather);
-
 //card elements
 const cardEl = document.querySelector('.card');
+const imgEl = document.querySelector('#img');
 const locationEl = document.querySelector('#location');
 const descriptionEl = document.querySelector('#description');
+const windSpeedEl = document.querySelector('#wind-speed');
+const humidityEl = document.querySelector('#humidity');
 const tempEl = document.querySelector('#temp');
 const feelsLikeEl = document.querySelector('#feels-like');
-const windSpeedEl = document.querySelector('#wind-speed');
-const imgEl = document.querySelector('#img');
 
 async function getWeather() {
+    //input
     const locationName = inputEl.value;
     inputEl.value = '';
-
+    //request
     const result = await request(locationName);
-    console.log(result);
-
     //location
     const nearestLocation = result.nearest_area[0];
     const area = nearestLocation.areaName[0].value;
@@ -25,22 +24,22 @@ async function getWeather() {
     const country = nearestLocation.country[0].value;
     //data
     const currCondition = result.current_condition[0];
+    const windSpeed = currCondition.windspeedKmph;
+    const humidity = currCondition.humidity;
     const temp = currCondition.temp_C;
     const feelsLike = currCondition.FeelsLikeC;
-    const windSpeed = currCondition.windspeedKmph;
     //icon and img
     const weatherCode = currCondition.weatherCode;
     const icon = findIcon(weatherCode);
     const img = findImg(weatherCode);
-
     //filling in the data
     imgEl.src = img;
     locationEl.textContent = area + ' ' + region + ' ' + country;
-    descriptionEl.textContent = icon.join(', ');
-    tempEl.textContent = 'Temperature: ' + temp + ' °C';
-    feelsLikeEl.textContent = 'Feels like: ' + feelsLike + ' °C';
-    windSpeedEl.textContent = 'Wind speed: ' + windSpeed + ' km/h';
-
+    descriptionEl.textContent = icon.reverse().join(' ');
+    tempEl.textContent = '🌡 Temperature: ' + temp + ' °C';
+    feelsLikeEl.textContent = '🌡 Feels like: ' + feelsLike + ' °C';
+    windSpeedEl.textContent = '☴ Wind speed: ' + windSpeed + ' km/h';
+    humidityEl.textContent = '💧 Humidity: ' + humidity
     //showing card
     cardEl.classList.remove('hidden');
 }
@@ -55,7 +54,6 @@ async function request(locationName) {
 }
 
 function findWeatherDescriptionByCode(code) {
-
     const WWO_CODE = {
         "113": "Sunny",
         "116": "PartlyCloudy",
@@ -106,14 +104,11 @@ function findWeatherDescriptionByCode(code) {
         "392": "ThunderySnowShowers",
         "395": "HeavySnowShowers",
     };
-
     return Object.entries(WWO_CODE).find(el => el[0] == code);
 }
 
 function findIcon(code) {
-
     const weatherDescription = findWeatherDescriptionByCode(code);
-
     const WEATHER_SYMBOL = {
         "Unknown": "✨",
         "Cloudy": "☁️",
@@ -135,14 +130,11 @@ function findIcon(code) {
         "ThunderySnowShowers": "⛈",
         "VeryCloudy": "☁️",
     };
-
     return Object.entries(WEATHER_SYMBOL).find(el => el[0] == weatherDescription[1]);
 }
 
 function findImg(code) {
-
     const weatherDescription = findWeatherDescriptionByCode(code);
-
     const IMGS = {
         "Unknown": "./img/Default.jpg",
         "Cloudy": "./img/Cloudy.jpg",
@@ -164,7 +156,6 @@ function findImg(code) {
         "ThunderySnowShowers": "./img/Thundery.jpg",
         "VeryCloudy": "./img/VeryCloudy.jpg",
     };
-
     const img = Object.entries(IMGS).find(el => el[0] == weatherDescription[1]);
     return img[1];
 }
