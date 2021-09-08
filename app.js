@@ -28,14 +28,16 @@ async function getWeather() {
     const humidity = currCondition.humidity;
     const temp = currCondition.temp_C;
     const feelsLike = currCondition.FeelsLikeC;
-    //icon and img
+    //icon, conditon and img
     const weatherCode = currCondition.weatherCode;
-    const icon = findIcon(weatherCode);
+    const description = findIcon(weatherCode);
     const img = findImg(weatherCode);
+    const icon = description[1];
+    const conditionArr = description[0].match(/[A-Z][a-z]+/g);
     //filling in the data
     imgEl.src = img;
     locationEl.textContent = area + ' ' + region + ' ' + country;
-    descriptionEl.textContent = icon.reverse().join(' ');
+    descriptionEl.textContent = icon + ' ' + conditionArr.join(' ');
     tempEl.textContent = '🌡 Temperature: ' + temp + ' °C';
     feelsLikeEl.textContent = '🌡 Feels like: ' + feelsLike + ' °C';
     windSpeedEl.textContent = '☴ Wind speed: ' + windSpeed + ' km/h';
