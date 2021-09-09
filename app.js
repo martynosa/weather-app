@@ -38,10 +38,10 @@ async function getWeather() {
     imgEl.src = img;
     locationEl.textContent = area + ' ' + region + ' ' + country;
     descriptionEl.textContent = icon + ' ' + conditionArr.join(' ');
-    tempEl.textContent = '🌡 Temperature: ' + temp + ' °C';
-    feelsLikeEl.textContent = '🌡 Feels like: ' + feelsLike + ' °C';
+    tempEl.textContent = '🌡 Temperature: ' + temp + '°C';
+    feelsLikeEl.textContent = '🌡 Feels like: ' + feelsLike + '°C';
     windSpeedEl.textContent = '☴ Wind speed: ' + windSpeed + ' km/h';
-    humidityEl.textContent = '💧 Humidity: ' + humidity;
+    humidityEl.textContent = '💧 Humidity: ' + humidity + '%';
     //showing card
     cardEl.classList.remove('hidden');
 }
